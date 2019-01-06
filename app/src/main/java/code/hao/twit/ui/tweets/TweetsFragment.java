@@ -19,11 +19,8 @@ import code.hao.twit.databinding.FragmentTweetsBinding;
 import code.hao.twit.utils.Injection;
 import code.hao.twit.utils.MessageUtils;
 import code.hao.twit.utils.ViewModelFactory;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import static code.hao.twit.utils.MessageUtils.MAX_LENGTH;
 import static code.hao.twit.utils.MessageUtils.splitMessage;
 
 public class TweetsFragment extends Fragment {
@@ -103,7 +100,6 @@ public class TweetsFragment extends Fragment {
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String s = input.getText().toString();
-//                            Tweet tweet = new Tweet();
 
                         List<String> splits;
                         try {
