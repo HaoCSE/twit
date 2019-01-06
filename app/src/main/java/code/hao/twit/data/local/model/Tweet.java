@@ -3,9 +3,7 @@ package code.hao.twit.data.local.model;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import com.google.gson.annotations.SerializedName;
 
 /**
  * @author haotran
@@ -18,11 +16,9 @@ public class Tweet {
     @NonNull
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    @SerializedName("id")
     private long id;
 
     @ColumnInfo(name = "tweet")
-    @SerializedName("tweet")
     private String tweet;
 
     @NonNull
