@@ -95,8 +95,8 @@ public class TweetsFragment extends Fragment implements View.OnClickListener{
 
         viewModel.getTweetListLiveData().observe(getViewLifecycleOwner(), new Observer<List<Tweet>>() {
             @Override
-            public void onChanged(List<Tweet> movieList) {
-                if (movieList.isEmpty()) {
+            public void onChanged(List<Tweet> messageList) {
+                if (messageList.isEmpty()) {
                     // TODO: optimize this
                     // display empty state since there is no tweets in database
                     binding.rvTweetList.setVisibility(View.GONE);
@@ -104,7 +104,8 @@ public class TweetsFragment extends Fragment implements View.OnClickListener{
                 } else {
                     binding.rvTweetList.setVisibility(View.VISIBLE);
                     binding.emptyState.setVisibility(View.GONE);
-                    favoritesAdapter.submitList(movieList);
+                    favoritesAdapter.submitList(messageList);
+                    binding.rvTweetList.scrollToPosition(messageList.size() - 1);
                 }
             }
         });
@@ -140,6 +141,7 @@ public class TweetsFragment extends Fragment implements View.OnClickListener{
                     viewModel.insertTweet(tweet);
 
                 }
+
 
                 binding.inputMessageEdt.setText("");
                 break;

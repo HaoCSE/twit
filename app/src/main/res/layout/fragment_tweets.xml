@@ -91,6 +91,7 @@
                 android:paddingEnd="4dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="4dp"
+                android:focusableInTouchMode="true"
                 android:paddingStart="16dp">
 
             <!-- edittext used to input message-->
@@ -99,7 +100,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:hint="Start a message"
+                    android:hint="@string/enter_your_message"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toStartOf="@+id/send_message_btn" />
 
