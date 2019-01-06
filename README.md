@@ -1,6 +1,10 @@
 # Twit
 MVVM + Repository + Offline support + Android Architecture Components + UnitTests
 
+## Demo
+<img src="/screenshots/Screenshot_1546764840.png?raw=true" align= "left" width="320px">
+<img src="/screenshots/demo.gif?raw=true" width="320px">
+
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
