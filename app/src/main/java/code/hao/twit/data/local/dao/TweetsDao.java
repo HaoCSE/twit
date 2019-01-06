@@ -10,7 +10,9 @@ import java.util.List;
 
 @Dao
 public interface TweetsDao {
-    @Query("SELECT * FROM tweet")
+
+    //For testing, order by id desc
+    @Query("SELECT * FROM tweet ORDER BY id DESC")
     LiveData<List<Tweet>> getTweets();
 
     @Insert

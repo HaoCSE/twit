@@ -1,11 +1,13 @@
 package code.hao.twit.ui.tweets;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
+import android.widget.EditText;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
@@ -15,9 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import code.hao.twit.data.local.model.Tweet;
 import code.hao.twit.databinding.FragmentTweetsBinding;
 import code.hao.twit.utils.Injection;
+import code.hao.twit.utils.MessageUtils;
 import code.hao.twit.utils.ViewModelFactory;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static code.hao.twit.utils.MessageUtils.MAX_LENGTH;
+import static code.hao.twit.utils.MessageUtils.splitMessage;
 
 public class TweetsFragment extends Fragment {
 
@@ -42,8 +49,11 @@ public class TweetsFragment extends Fragment {
         viewModel = obtainViewModel(getActivity());
         setupListAdapter();
 
+    }
 
-
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     private TweetsViewModel obtainViewModel(FragmentActivity activity) {
@@ -84,9 +94,58 @@ public class TweetsFragment extends Fragment {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Tweet tweet = new Tweet();
-                tweet.setTweet("this is a tweet!");
-                viewModel.insertTweet(tweet);
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Enter your tweet");
+
+                // Set an EditText view to get user input
+                final EditText input = new EditText(getActivity());
+                alert.setView(input);
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String s = input.getText().toString();
+//                        if (s.isEmpty()) {
+//                            Toast.makeText(getActivity(), "Your text is empty!", Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
+
+//                        if (s.length() > MAX_LENGTH && s.lastIndexOf(" ") == -1) {
+//                            Toast.makeText(getActivity(), "Your text is invalid!", Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
+
+//                        if (s.length() <= MAX_LENGTH) {
+//                            Tweet tweet = new Tweet();
+//                            tweet.setTweet(s);
+//                            viewModel.insertTweet(tweet);
+//                            return;
+//                        }
+
+                        List<String> splitted;
+                        try {
+                            splitted = splitMessage(s,MessageUtils.MAX_LENGTH);
+                        } catch (MessageUtils.SplitMessageException e) {
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                            return;
+                        }
+                        // if splitted is an empty array => ...
+                        for (int i = 0; i < splitted.size(); i++) {
+                            Tweet tweet = new Tweet();
+                            tweet.setTweet(splitted.get(i));
+                            viewModel.insertTweet(tweet);
+
+                        }
+
+//
+                    }
+                });
+
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+                alert.show();
             }
         });
     }
