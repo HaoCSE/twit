@@ -103,35 +103,20 @@ public class TweetsFragment extends Fragment {
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String s = input.getText().toString();
-//                        if (s.isEmpty()) {
-//                            Toast.makeText(getActivity(), "Your text is empty!", Toast.LENGTH_SHORT).show();
-//                            return;
-//                        }
-
-//                        if (s.length() > MAX_LENGTH && s.lastIndexOf(" ") == -1) {
-//                            Toast.makeText(getActivity(), "Your text is invalid!", Toast.LENGTH_SHORT).show();
-//                            return;
-//                        }
-
-//                        if (s.length() <= MAX_LENGTH) {
 //                            Tweet tweet = new Tweet();
-//                            tweet.setTweet(s);
-//                            viewModel.insertTweet(tweet);
-//                            return;
-//                        }
 
-                        List<String> splitted;
+                        List<String> splits;
                         try {
-                            splitted = splitMessage(s,MessageUtils.MAX_LENGTH);
+                            splits = splitMessage(s,MessageUtils.MAX_LENGTH);
                         } catch (MessageUtils.SplitMessageException e) {
                             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                             return;
                         }
-                        // if splitted is an empty array => ...
-                        for (int i = 0; i < splitted.size(); i++) {
+                        // if splits is an empty array => ...
+                        for (int i = 0; i < splits.size(); i++) {
                             Tweet tweet = new Tweet();
-                            tweet.setTweet(splitted.get(i));
+                            tweet.setTweet(splits.get(i));
                             viewModel.insertTweet(tweet);
 
                         }

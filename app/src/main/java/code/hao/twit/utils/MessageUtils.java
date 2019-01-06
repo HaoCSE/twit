@@ -1,6 +1,7 @@
 package code.hao.twit.utils;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +50,12 @@ public class MessageUtils {
 
             for (int wordIndex = 0; wordIndex < words.length; wordIndex++) {
                 String word = words[wordIndex];
-
                 // if length of each word include indicator length greater than character limit, return empty array
+                // is this logic ok? need to check? => BTW: this case is rare. but, still need to handle?
+                // with "well, whoamiwhatiamgonnadotheworldissomuchmorepainful" => error
+                // expected result: "1/2 well," + "2/2 whoamiwhatiamgonnadotheworldissomuchmorepainful" ...?
+                // => then the latter is > 50 even though the origin is < 50.. =>
+                // => + Due to the requirement => return error for this case.
                 if (word.length() + indicatorLength > characterLimit) {
                     break;
                 }
@@ -81,7 +86,7 @@ public class MessageUtils {
                 throw new SplitMessageException(SplitMessageException.INDICATOR_SAME_PARTIAL_VALUE);
             }
 
-            messageDataList.add(partial.toString().replaceAll("\\s+$", ""));
+            messageDataList.add(partial.toString().replaceAll("\\s+$", ""));  //to trim trailing whitespace.
             partial.setLength(0);
         }
 
@@ -91,6 +96,12 @@ public class MessageUtils {
             messageDataList = separateMultipart(words, totalParts + 1, characterLimit);
         }
 
+//        for (int i = 0; i < messageDataList.size(); i++) {
+//            System.out.println(messageDataList.get(i));
+//            System.out.println(messageDataList.get(i).length());
+//
+//        }
+
         return messageDataList;
     }
 
@@ -98,6 +109,10 @@ public class MessageUtils {
      * {@link SplitMessageException}
      */
     public static final class SplitMessageException extends Exception {
+        public static final String WORD_LENGTH_OVER_LIMIT_CHARACTER_STRING = "The message contains a span of non-whitespace characters longer than MAX_LENGTH";
+        public static final String INDICATOR_SAME_PARTIAL_VALUE_STRING = "The message contains a span of non-whitespace characters and indicator longer than MAX_LENGTH";
+
+
         public static final int NON_WHITESPACE_LIMIT_CHARACTER = -123;
 
         public static final int WORD_LENGTH_OVER_LIMIT_CHARACTER = -124;
@@ -121,18 +136,18 @@ public class MessageUtils {
         @Override
         public void printStackTrace() {
             if (getErrorCode() == WORD_LENGTH_OVER_LIMIT_CHARACTER || getErrorCode() == NON_WHITESPACE_LIMIT_CHARACTER) {
-                System.err.println("The message contains a span of non-whitespace characters longer than limit characters");
+                System.err.println(WORD_LENGTH_OVER_LIMIT_CHARACTER_STRING);
             } else if (getErrorCode() == INDICATOR_SAME_PARTIAL_VALUE) {
-                System.err.println("beak loop because the indicator string and partial string same value");
+                System.err.println(INDICATOR_SAME_PARTIAL_VALUE_STRING);
             }
         }
 
         @Override
         public String getMessage() {
             if (getErrorCode() == WORD_LENGTH_OVER_LIMIT_CHARACTER || getErrorCode() == NON_WHITESPACE_LIMIT_CHARACTER) {
-                return "The message contains a span of non-whitespace characters longer than limit characters";
+                return WORD_LENGTH_OVER_LIMIT_CHARACTER_STRING;
             } else if (getErrorCode() == INDICATOR_SAME_PARTIAL_VALUE) {
-                return "beak loop because the indicator string and partial string same value";
+                return INDICATOR_SAME_PARTIAL_VALUE_STRING;
             }
             return super.getMessage();
         }
