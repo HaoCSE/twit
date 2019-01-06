@@ -1,6 +1,24 @@
 # Twit
 MVVM + Repository + Offline support + Android Architecture Components + UnitTests
 
+## Design Pattern: MVVM
+<img src="https://developer.android.com/topic/libraries/architecture/images/final-architecture.png" width="420px">
+
+## Algorithm
+### Step 1:
+        1) Estimate number of chunk
+        2) Split message into 'words' list
+### Step 2:
+        1) Use for-loop for 'words' to generate chunks with indicator (length <= 50)
+        2) Track the last index: 'breakAtIndex'
+### Step 3:
+        Because of indicator counts toward the character limit
+          then re-calculate the number of chunk by comparing 'breakAtIndex' with 'words.length - 1'
+          and increase number of chunk
+        Use a recursive formula.
+   Please check [MessageUtils](https://github.com/HaoCSE/twit/blob/master/app/src/test/java/code/hao/twit/ExampleUnitTest.java) for the detail.
+
+
 ## Demo
 <img src="/screenshots/Screenshot_1546764840.png?raw=true" align= "left" width="320px">
 <img src="/screenshots/demo.gif?raw=true" width="320px">
@@ -30,6 +48,9 @@ git clone https://github.com/HaoCSE/twit.git
 *   [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
 *   [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
 *   [DataBinding](https://developer.android.com/topic/libraries/data-binding/)
+
+## Unit Tests
+[Here](https://github.com/HaoCSE/twit/blob/master/app/src/test/java/code/hao/twit/ExampleUnitTest.java)
 
 ## License
 ```
