@@ -1,4 +1,4 @@
-# twit
+# Twit
 MVVM + Repository + Offline support + Android Architecture Components + UnitTests
 
 ## Libraries
